@@ -1,18 +1,27 @@
 package com.example.mapwards;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -93,7 +102,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 
+    }
+
+    //gets the numbers in the input boxes and sets them to the destination coordinates
+    public void onButtonPress(View view) {
+        EditText mLatEditText = (EditText)findViewById(R.id.lat_input);
+        EditText mLongEditText = (EditText)findViewById(R.id.long_input);
+
+        String endLat = mLatEditText.getText().toString();
+        String endLong = mLongEditText.getText().toString();
+
+        setRoute(endLat, endLong);
+
+        mLatEditText.setText("");
+        mLongEditText.setText("");
+    }
+
+    public void setRoute(String endLat, String endLong) {
         //sets the start as the user's current location coordinates
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.NETWORK_PROVIDER;
@@ -104,17 +131,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(start).title("Start"));
 
         //sets the finish as user input
-        LatLng finish = new LatLng(37.573670,-122.043730);
+        LatLng finish = new LatLng(Double.valueOf(endLat),Double.valueOf(endLong));
         mMap.addMarker(new MarkerOptions().position(finish).title("Destination"));
 
-        //LatLng zaragoza = new LatLng(41.648823,-0.889085);
+        //LatLng zoomCenter = new LatLng(41.648823,-0.889085);
 
         List<LatLng> path = new ArrayList();
 
         GeoApiContext context = new GeoApiContext.Builder().apiKey(API_KEY).build();
         String startString = startLat + "," + startLong;
-        String endString;
-        DirectionsApiRequest req = DirectionsApi.getDirections(context, startString, "37.573670,-122.043730");
+        String endString = endLat + "," + endLong;
+        DirectionsApiRequest req = DirectionsApi.getDirections(context, startString, endString);
 
         try {
             DirectionsResult res = req.await();
@@ -165,7 +192,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.rgb(0,191,255)).width(10);
             mMap.addPolyline(opts);
         }
-        //mMap.getUiSettings().setZoomControlsEnabled(true);
-
     }
+
+    public void createDialog(String instruction) {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this).setTitle("chortle").setMessage(instruction);
+        dialog.setPositiveButton("Confirm", (dialog1, whichButton) -> dialog1.dismiss());
+        final AlertDialog alert = dialog.create();
+        alert.show();
+
+        // Hide after some seconds
+        final Handler handler  = new Handler();
+        final Runnable runnable = () -> {
+            if (alert.isShowing()) {
+                alert.dismiss();
+            }
+        };
+
+        alert.setOnDismissListener(dialog12 -> handler.removeCallbacks(runnable));
+
+        handler.postDelayed(runnable, 3000);
+    }
+
+
 }
