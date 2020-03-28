@@ -37,7 +37,7 @@ class Traffic:
 
     def reached(self):
         if(self.carArray[self.target].lane == self.targetLoc[1]):
-            if(self.carArray[self.target].x >= self.targetLoc[0]):
+            if(abs(self.carArray[self.target].x - self.targetLoc[0]) <=1):
                 return True
         return False
 
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     car3 = Car(x3,v3,lane3,[(x3,lane3)])
     carArray.append(car3)
 
-    #third car
+    #fourth car
     x4 = 0.
     v4 = 66
     lane4 = 0
