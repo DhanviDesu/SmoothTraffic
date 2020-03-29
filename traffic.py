@@ -43,6 +43,7 @@ class Traffic:
         else:
             return self.carArray[self.target].updateLane(change)
 
+    #TEST THIS
     def missed(self):
         if(self.carArray[self.target].x - self.targetLoc[0] > 5):
             return True
@@ -99,10 +100,11 @@ if __name__ == '__main__':
     carArray.append(car3)
 
     #fourth car collides with third car in lane 0
-    #x4 = 66
-    #lane4 = 0
-    #car4 = Car(x4,v4,lane4,[(x4,lane4)])
-    #carArray.append(car4)
+    x4 = 20
+    v4 = 65
+    lane4 = 2
+    car4 = Car(x4,v4,lane4,[(x4,lane4)])
+    carArray.append(car4)
 
     #fifth car collides with third car after travelling some distance in lane due to speed differences
     #x5 = 5.
@@ -126,15 +128,15 @@ if __name__ == '__main__':
     #carArray.append(car7)
 
     #eigth car collides with car 3 in lane 3
-    x8 = 0.
-    v8 = 75
-    lane8 = 3
-    car8 = Car(x8,v8,lane8,[(x8,lane8)])
-    carArray.append(car8)
+    #x8 = 0.
+    #v8 = 75
+    #lane8 = 3
+    #car8 = Car(x8,v8,lane8,[(x8,lane8)])
+    #carArray.append(car8)
 
     #ninth car so there is a third car to test with
     x9 = 0.
-    v9 = 60
+    v9 = 80
     lane9 = 1
     car9 = Car(x9,v9,lane9,[(x9,lane9)])
     carArray.append(car9)
@@ -142,7 +144,7 @@ if __name__ == '__main__':
     #tenth car
     x10 = 0.
     v10 = 60
-    lane10 = 0
+    lane10 = 3
     car10 = Car(x10,v10,lane10,[(x10,lane10)])
     carArray.append(car10)
 
