@@ -6,6 +6,7 @@ import random
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import tensorflow as tf
 
 def generate_Traffic(cars):
     carArray=[]
@@ -41,3 +42,34 @@ if __name__ == '__main__':
         plt.plot(xList, laneList,'o')
     plt.plot(attempt.trafficInstance.targetLoc[0],0,"X")
     plt.show()
+
+N_OUTPUTS = 2
+N_INPUTS = 4
+N_HIDDEN_UNITS =  # Define here
+N_EPOCHS =  # define here
+
+input = tf.placeholder(tf.float32, shape=[None, N_INPUTS], name='input')  # input here
+
+outputs = tf.placeholder(tf.float32, shape=[None, N_OUTPUTS], name='output')  # one sample is something like[Ax,Ay,Az]
+
+# one hidden layer with 3 outputs
+W = {
+    'hidden': tf.Variable(tf.random_normal([N_INPUTS, N_HIDDEN_UNITS])),
+    'output': tf.Variable(tf.random_normal([N_HIDDEN_UNITS, N_OUTPUTS]))
+}
+biases = {
+    'hidden': tf.Variable(tf.random_normal([N_HIDDEN_UNITS], mean=1.0)),
+    'output': tf.Variable(tf.random_normal([N_OUTPUTS]), mean=1.0)
+}
+
+hidden = tf.matmul(input, W['hidden']) + biases['hidden']  # hidden layer
+output_ = tf.matmul(hidden, W['output']) + biases['output']  # outputs
+
+cost = tf.reduce_mean(tf.square(output_ - outputs))  # calculates the cost
+optimizer = tf.train.GradientDescentOptimizer(0.001).minimize(cost)  # optimazer
+
+with tf.Session() as session:
+    session.run(tf.global_variables_initializer())
+    for epoch in range(N_EPOCHS):
+
+    # _ = session.run([optimizer],feed_dict={input: , outputs : }) should feed input and output as [Ax,Ay,Az]
