@@ -1,14 +1,12 @@
 import math
 from car import Car
 from traffic import Traffic
-import random
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
 
 constTime = 0.05
-# neural network with backpropogation
 class Planner:
 
     def __init__(self,trafficInstance,controller):
@@ -23,7 +21,8 @@ class Planner:
         while not (self.trafficInstance.missed() or
             self.trafficInstance.reached() or self.trafficInstance.collision()):
             condition, lane_err,dist_err,time = self.trafficInstance.updateAll(constTime)
-            lane,vel = controller(self.trafficInstance,lane_err,dist_err,constTime)
+            currentPos = self.getCarLoc()
+            lane,vel = self.controller(currentPos,lane_err,dist_err,constTime)
             if(lane ==0):
                 self.trafficInstance.updateOne(True,vel)
             else:
@@ -32,7 +31,7 @@ class Planner:
             l_err.append(lane_err)
             time_length.append(time)
             traffic = condition
-        cost = 0
+        cost = 0.
         if(traffic==2):
             cost = cost + 10000
         if(traffic==1):
@@ -43,7 +42,16 @@ class Planner:
             cost = cost + time_length[i]*10 + l_err[i]*30 + d_err[i]
         return cost,self.trafficInstance.carArray[self.trafficInstance.target].posArray
 
+    def showAll(self):
+        return self.trafficInstance.carArray
 
+    def getCarLoc(self):
+        current =[]
+        for i in range(len(self.trafficInstance.carArray)):
+            if(i!=self.trafficInstance.target):
+                car = self.trafficInstance.carArray[i]
+                current.append((car.x,car.lane))
+        return current
 
 if __name__ == '__main__':
 
@@ -52,7 +60,7 @@ if __name__ == '__main__':
         #neural network
 
         # trafficInstance: current instance of traffic
-        def controller(trafficInstance, lane_err, dist_err,time):
+        def controller(carLoc, lane_err, dist_err,time):
             changeVel=20
             changeLane=0
     #NEURAL NETWORK
@@ -76,4 +84,4 @@ if __name__ == '__main__':
         bigTraffic = Traffic(carArray,0,(15.,0))
         attempt = Planner(bigTraffic,controller)
 
-        print(attempt.run())
+        #print(attempt.run())
