@@ -168,7 +168,7 @@ if __name__ == '__main__':
     #lane13 = 4
     #car13 = Car(x13,v13,lane13,[(x13,lane13)])
     #carArray.append(car13)
-    
+
     #fourteenth car
     #x14 = 15.
     #v14 = 75
