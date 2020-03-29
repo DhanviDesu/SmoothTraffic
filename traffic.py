@@ -22,13 +22,13 @@ class Traffic:
             self.carArray[i].updatePos(time)
             if(i==self.target):
                 if(self.reached()):
-                    lane_err,dist_err,time = error()
+                    lane_err,dist_err,time = self.error()
                     return 1,lane_err,dist_err,time
                 if(self.missed()):
                     print("Missed")
-                    lane_err,dist_err,time = error()
+                    lane_err,dist_err,time = self.error()
                     return 3,lane_err,dist_err,time
-        lane_err,dist_err,time = error()
+        lane_err,dist_err,time = self.error()
         if(self.collision()):
             print("Collision occurred")
             return 2,lane_err,dist_err,time
