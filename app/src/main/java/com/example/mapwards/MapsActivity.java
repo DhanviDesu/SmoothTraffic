@@ -47,7 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final String TAG = "oopsie poopsie";
     private GoogleMap mMap;
-    private static final String API_KEY = "AIzaSyDB03ICJBXvDQfn6R3Q1vumQCvhKzcEjIo";
+    private static final String OOPS = "AIzaSyDB03ICJBXvDQfn6R3Q1vumQCvhKzcEjIo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +138,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         List<LatLng> path = new ArrayList();
 
-        GeoApiContext context = new GeoApiContext.Builder().apiKey(API_KEY).build();
+        GeoApiContext context = new GeoApiContext.Builder().apiKey(OOPS).build();
         String startString = startLat + "," + startLong;
         String endString = endLat + "," + endLong;
         DirectionsApiRequest req = DirectionsApi.getDirections(context, startString, endString);
