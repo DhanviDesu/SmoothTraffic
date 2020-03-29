@@ -133,11 +133,32 @@ if __name__ == '__main__':
     #carArray.append(car11)
 
     #twelfth car
-    #x12 = 0.
+    #x12 = 20.
     #v12 = 80
     #lane12 = 3
     #car12 = Car(x12,v12,lane12,[(x12,lane12)])
     #carArray.append(car12)
+
+    #thirteenth car
+    #x13 = 10.
+    #v13 = 70
+    #lane13 = 4
+    #car13 = Car(x13,v13,lane13,[(x13,lane13)])
+    #carArray.append(car13)
+    
+    #fourteenth car
+    #x14 = 15.
+    #v14 = 75
+    #lane14 = 2
+    #car14 = Car(x14,v14,lane14,[(x14,lane14)])
+    #carArray.append(car14)
+
+    #fifteenth car
+    #x15 = 15.
+    #v15 = 60
+    #lane15 = 1
+    #car15 = Car(x15,v15,lane15,[(x15,lane15)])
+    #carArray.append(car15)
 
     #together
     # 0 indexed target
