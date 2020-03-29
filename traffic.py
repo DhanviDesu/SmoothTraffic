@@ -12,19 +12,27 @@ class Traffic:
         self.carArray = carArray
         self.target = target
         self.targetLoc = targetLoc
-
+        self.time =0
 
     # 1 for reached
     # 2 for collision
     def updateAll(self,time):
+        self.time = time
         for i in range(len(self.carArray)):
             self.carArray[i].updatePos(time)
             if(i==self.target):
                 if(self.reached()):
-                    return 1
+                    lane_err,dist_err,time = error()
+                    return 1,lane_err,dist_err,time
+                if(self.missed()):
+                    print("Missed")
+                    lane_err,dist_err,time = error()
+                    return 3,lane_err,dist_err,time
+        lane_err,dist_err,time = error()
         if(self.collision()):
             print("Collision occurred")
-            return 2
+            return 2,lane_err,dist_err,time
+        return 0,lane_err,dist_err,time
 
     # change is either going to be velocity or lane
     # if true update velocity
@@ -35,9 +43,14 @@ class Traffic:
         else:
             return self.carArray[self.target].updateLane(change)
 
+    def missed(self):
+        if(self.carArray[self.target].x - self.targetLoc[0] > 5):
+            return True
+        return False
+
     def reached(self):
         if(self.carArray[self.target].lane == self.targetLoc[1]):
-            if(abs(self.carArray[self.target].x - self.targetLoc[0]) <=1):
+            if(abs(self.carArray[self.target].x - self.targetLoc[0]) <=5):
                 return True
         return False
 
@@ -51,6 +64,14 @@ class Traffic:
                 if(abs(temp.x - tarCar.x)<=0.1):
                     return True
         return False
+
+    # time cost
+    # lane difference
+    # destination difference
+    def error(self):
+        lane_err = self.targetLoc[1] - self.carArray[self.target].lane
+        dist_err = self.targetLoc[0] - self.carArray[self.target].x
+        return lane_err,dist_err,self.time
 
 if __name__ == '__main__':
 
@@ -77,7 +98,7 @@ if __name__ == '__main__':
     car3 = Car(x3,v3,lane3,[(x3,lane3)])
     carArray.append(car3)
 
-    #fourth car
+    #fourth car collides in lane 0
     x4 = 0.
     v4 = 66
     lane4 = 0
@@ -90,12 +111,12 @@ if __name__ == '__main__':
     bigTraffic = Traffic(carArray,2,(100.,0))
     for i in range(62):
         bigTraffic.updateOne(False,-1)
-        check = bigTraffic.updateAll(0.05)
+        check = bigTraffic.updateAll(0.05)[0]
         if(check ==1):
             bigTraffic.updateOne(True,0)
         elif(check ==2 ):
             break
-
+    #print(bigTraffic.error())
     for car in bigTraffic.carArray:
         xList = []
         laneList = []
