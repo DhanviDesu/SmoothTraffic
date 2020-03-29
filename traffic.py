@@ -25,12 +25,12 @@ class Traffic:
                     lane_err,dist_err,time = self.error()
                     return 1,lane_err,dist_err,time
                 if(self.missed()):
-                    print("Missed")
+                    #print("Missed")
                     lane_err,dist_err,time = self.error()
                     return 3,lane_err,dist_err,time
         lane_err,dist_err,time = self.error()
         if(self.collision()):
-            print("Collision occurred")
+            #print("Collision occurred")
             return 2,lane_err,dist_err,time
         return 0,lane_err,dist_err,time
 
@@ -69,8 +69,8 @@ class Traffic:
     # lane difference
     # destination difference
     def error(self):
-        lane_err = self.targetLoc[1] - self.carArray[self.target].lane
-        dist_err = self.targetLoc[0] - self.carArray[self.target].x
+        lane_err = abs(self.targetLoc[1] - self.carArray[self.target].lane)
+        dist_err = abs(self.targetLoc[0] - self.carArray[self.target].x)
         return lane_err,dist_err,self.time
 
 if __name__ == '__main__':
