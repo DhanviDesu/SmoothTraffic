@@ -19,10 +19,11 @@ class Planner:
         d_err = []
         l_err = []
         time_length = []
-        traffic
-        while not trafficInstance.missed() or trafficInstance.reached() or trafficInstance.collision():
-            condition, lane_err,dist_err,time = trafficInstance.updateAll(constTime)
-            lane,vel = controller(trafficInstance,lane_err,dist_err,constTime)
+        traffic = 0
+        while not (self.trafficInstance.missed() or
+            self.trafficInstance.reached() or self.trafficInstance.collision()):
+            condition, lane_err,dist_err,time = self.trafficInstance.updateAll(constTime)
+            lane,vel = controller(self.trafficInstance,lane_err,dist_err,constTime)
             if(lane ==0):
                 self.trafficInstance.updateOne(True,vel)
             else:
@@ -33,21 +34,46 @@ class Planner:
             traffic = condition
         cost = 0
         if(traffic==2):
-            cost = cost + 1000
+            cost = cost + 10000
         if(traffic==1):
-            cost = cost - 1000
+            cost = cost - 10000
         if(traffic==3):
-            cost = cost + 500
+            cost = cost + 5000
         for i in range(len(time_length)):
-            cost = cost + time_length[i]*10 + l_err[i]*30
-    #input layer: traffic instance, lane err, dist err, time
-    #ouput layer: change lane, change val
-    #neural network
+            cost = cost + time_length[i]*10 + l_err[i]*30 + d_err[i]
+        return cost,self.trafficInstance.carArray[self.trafficInstance.target].posArray
 
-    # trafficInstance: current instance of traffic
-    def controller(self,trafficInstance, lane_err, dist_err,time):
-#NEURAL NETWORK
-        return changeLane, changeVel
 
 
 if __name__ == '__main__':
+
+        #input layer: traffic instance, lane err, dist err, time
+        #ouput layer: change lane, change val
+        #neural network
+
+        # trafficInstance: current instance of traffic
+        def controller(trafficInstance, lane_err, dist_err,time):
+            changeVel=20
+            changeLane=0
+    #NEURAL NETWORK
+            return changeLane, changeVel
+
+        carArray=[]
+
+        x3 = 0.
+        v3 = 80
+        lane3 = 0
+        car3 = Car(x3,v3,lane3,[(x3,lane3)])
+        carArray.append(car3)
+
+        #fourth car collides in lane 0
+        x4 = 0.
+        v4 = 66
+        lane4 = 1
+        car4 = Car(x4,v4,lane4,[(x4,lane4)])
+        carArray.append(car4)
+
+        bigTraffic = Traffic(carArray,0,(15.,0))
+        attempt = Planner(bigTraffic,controller)
+
+        print(attempt.run())
