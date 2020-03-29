@@ -98,14 +98,13 @@ if __name__ == '__main__':
     car3 = Car(x3,v3,lane3,[(x3,lane3)])
     carArray.append(car3)
 
-<<<<<<< HEAD
     #fourth car collides in lane 0
     x4 = 0.
     v4 = 66
     lane4 = 0
     car4 = Car(x4,v4,lane4,[(x4,lane4)])
     carArray.append(car4)
-=======
+
     #fourth car collides with third car in lane 0
     #x4 = 66
     #lane4 = 0
@@ -174,7 +173,7 @@ if __name__ == '__main__':
     #lane13 = 4
     #car13 = Car(x13,v13,lane13,[(x13,lane13)])
     #carArray.append(car13)
-    
+
     #fourteenth car
     #x14 = 15.
     #v14 = 75
@@ -188,7 +187,6 @@ if __name__ == '__main__':
     #lane15 = 1
     #car15 = Car(x15,v15,lane15,[(x15,lane15)])
     #carArray.append(car15)
->>>>>>> 476ae911a6b33d159c7e5ba57528232352a855e1
 
     #together
     # 0 indexed target
